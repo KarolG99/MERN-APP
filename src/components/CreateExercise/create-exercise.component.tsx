@@ -3,22 +3,23 @@ import FormField from "../FormField/FormField";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { ExerciseWrapper } from "./create-exercise.styles";
+import axios from "axios";
 
-interface IExerciseState {
-  username: String;
-  description: String;
-  duration: Number;
-  date: Date;
-  // users: unknown[];
-}
+// interface IExerciseState {
+//   username: String;
+//   description: String;
+//   duration: Number;
+//   date: Date;
+//   // users: unknown[];
+// }
 
-const initialExerciseState: IExerciseState = {
-  username: "",
-  description: "",
-  duration: 0,
-  date: new Date(),
-  // users: [],
-};
+// const initialExerciseState: IExerciseState = {
+//   username: "",
+//   description: "",
+//   duration: 0,
+//   date: new Date(),
+//   // users: [],
+// };
 
 interface IInitialFormValues {
   username: String;
@@ -39,7 +40,7 @@ const initialDateState = {
 const CreateExercise = () => {
   const [formValues, setFormValues] = useState(initialFormValues);
   const [dateValue, setDateValue] = useState<{ date: Date }>(initialDateState);
-  const [exercise, setExercise] = useState(initialExerciseState);
+  // const [exercise, setExercise] = useState(initialExerciseState);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
     setFormValues({ ...formValues, [e.target.name]: e.target.value });
@@ -51,15 +52,16 @@ const CreateExercise = () => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-
     const newExercise = {
       username: formValues.username,
       description: formValues.description,
       duration: formValues.duration,
       date: dateValue.date,
     };
-
-    console.log(newExercise);
+    axios
+      .post("http://localhost:3000/exercises/add", newExercise)
+      .then((res) => console.log(res.data))
+      .catch((err) => console.log(err));
 
     setFormValues(initialFormValues);
     setDateValue(initialDateState);

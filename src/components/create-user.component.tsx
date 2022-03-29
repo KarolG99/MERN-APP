@@ -1,7 +1,7 @@
+import axios from "axios";
 import React, { useState } from "react";
 import { ExerciseWrapper } from "./CreateExercise/create-exercise.styles";
 import FormField from "./FormField/FormField";
-// import axios from "axios";
 
 interface IInitialUserState {
   username: string;
@@ -19,12 +19,13 @@ const CreateUser = () => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-
     const newUser = {
       username: formValues.username,
     };
-
-    console.log(newUser);
+    axios
+      .post("http://localhost:3000/users/add", newUser)
+      .then((res) => console.log(res.data))
+      .catch((err) => console.log(err));
 
     setFormValues(initialUserState);
   };
